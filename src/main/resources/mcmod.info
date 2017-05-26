@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ijedi.jediutil",
+  "name": "JediUtil",
+  "description": "Things that I think are useful.",
+  "version": "1.0",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["i_Jedi"],
+  "credits": "Dogs & Tigers.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
