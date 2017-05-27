@@ -15,7 +15,7 @@ public class RenderEvent extends Gui {
     private EntityPlayer player;
 
     @SubscribeEvent
-    public void render(RenderGameOverlayEvent.Post event){
+    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.Post event){
         if(event.getType() != RenderGameOverlayEvent.ElementType.CHAT){
             return;
         }
@@ -32,26 +32,24 @@ public class RenderEvent extends Gui {
         }
     }
 
+    // Update the coordinate information on the UI
     private void updatePlayerCoordinates(){
         // Get X, Y, Z
-        int xPos = player.getPosition().getX();
-        int yPos = player.getPosition().getY();
-        int zPos = player.getPosition().getZ();
-        String xString = "X: " + Integer.toString(xPos);
-        String zString = "Z: " + Integer.toString(zPos);
-        String yString = "Y: " + Integer.toString(yPos);
+        int xPos = (int)player.posX;
+        int yPos = (int)player.posY;
+        int zPos = (int)player.posZ;
+        String coordString = String.format("XYZ: %s | %s | %s", Integer.toString(xPos), Integer.toString(yPos), Integer.toString(zPos));
 
         // Figure out the direction the player is facing
         float headYaw = player.rotationYawHead;
         String dirString = PlayerDirectionEnum.getDirectionString(headYaw);
 
         // Display coordinates
-        minecraft.fontRendererObj.drawStringWithShadow(xString, UIEnum.COORD_X.getX(), UIEnum.COORD_X.getY(), 0xFFFFFF);
-        minecraft.fontRendererObj.drawStringWithShadow(zString, UIEnum.COORD_Z.getX(), UIEnum.COORD_Z.getY(), 0xFFFFFF);
-        minecraft.fontRendererObj.drawStringWithShadow(yString, UIEnum.COORD_Y.getX(), UIEnum.COORD_Y.getY(), 0xFFFFFF);
-        minecraft.fontRendererObj.drawStringWithShadow(dirString, UIEnum.COORD_DIRECTION.getX(), UIEnum.COORD_DIRECTION.getY(), 0xFFFFFF);
+        minecraft.fontRendererObj.drawStringWithShadow(coordString, UIEnum.COORDS.getX(), UIEnum.COORDS.getY(), 0xFFFFFF);
+        minecraft.fontRendererObj.drawStringWithShadow(dirString, UIEnum.COORDS_DIRECTION.getX(), UIEnum.COORDS_DIRECTION.getY(), 0xFFFFFF);
     }
 
+    // Update the world time on the UI
     private void updatePlayerTime(){
         // Convert ticks to IRL time
         // Offset by 6000 so that the time aligns more with a IRL time

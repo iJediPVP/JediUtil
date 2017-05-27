@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EntityJoinEvent {
 
     @SubscribeEvent
-    public void entityJoin(EntityJoinWorldEvent event){
+    public void onEntityJoinWorldEvent(EntityJoinWorldEvent event){
 
         // When a player joins set utilPlayer in JediUtil
         if(event.getEntity() instanceof EntityPlayer){
