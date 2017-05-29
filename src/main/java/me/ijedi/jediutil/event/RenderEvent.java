@@ -2,12 +2,20 @@ package me.ijedi.jediutil.event;
 
 import me.ijedi.jediutil.JediUtil;
 import me.ijedi.jediutil.enums.PlayerDirectionEnum;
-import me.ijedi.jediutil.enums.UIEnum;
+import me.ijedi.jediutil.ref.ConfigReference;
+import me.ijedi.jediutil.ui.UIManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
+
+import java.lang.reflect.Field;
 
 public class RenderEvent extends Gui {
 
@@ -20,33 +28,75 @@ public class RenderEvent extends Gui {
             return;
         }
 
+        if(!ConfigReference.isGuiOn){
+            return;
+        }
+
         // Render some things!
         if(!JediUtil.player.equals(null))
         {
             player = JediUtil.player;
             minecraft = Minecraft.getMinecraft();
             if(!minecraft.gameSettings.showDebugInfo){
-                updatePlayerCoordinates();
-                updatePlayerTime();
+
+                if(ConfigReference.isShowCoordinates){
+                    updatePlayerCoordinates();
+                }
+
+                if(ConfigReference.isShowDirection){
+                    updatePlayerDirection();
+                }
+
+                if(ConfigReference.isShowBiome){
+                    updatePlayerBiome();
+                }
+
+                if(ConfigReference.isShowClock){
+                    updatePlayerTime();
+                }
+
             }
         }
     }
 
+    /*// Run this before we render anything
+    private void preRender(){
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        //GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glScalef(0.975F, 0.975F,0.975F);
+        GL11.glTranslated(0.975F, 0.975F, 0.975F);
+    }
+
+    // Run after we render
+    private void postRender(){
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
+    }*/
+
     // Update the coordinate information on the UI
     private void updatePlayerCoordinates(){
-        // Get X, Y, Z
+        // Get & display X, Y, Z
         int xPos = (int)player.posX;
         int yPos = (int)player.posY;
         int zPos = (int)player.posZ;
         String coordString = String.format("XYZ: %s | %s | %s", Integer.toString(xPos), Integer.toString(yPos), Integer.toString(zPos));
 
-        // Figure out the direction the player is facing
+        int uiXPos = UIManager.coordinateUIObject.getXPos();
+        int uiYPos = UIManager.coordinateUIObject.getYPos();
+        minecraft.fontRendererObj.drawStringWithShadow(coordString, uiXPos, uiYPos, 0xFFFFFF);
+    }
+
+    // Update the player direction on the UI
+    private void updatePlayerDirection(){
+        // Get & display the direction the player is facing
         float headYaw = player.rotationYawHead;
         String dirString = PlayerDirectionEnum.getDirectionString(headYaw);
 
-        // Display coordinates
-        minecraft.fontRendererObj.drawStringWithShadow(coordString, UIEnum.COORDS.getX(), UIEnum.COORDS.getY(), 0xFFFFFF);
-        minecraft.fontRendererObj.drawStringWithShadow(dirString, UIEnum.COORDS_DIRECTION.getX(), UIEnum.COORDS_DIRECTION.getY(), 0xFFFFFF);
+        int uiXPos = UIManager.directionUIObject.getXPos();
+        int uiYPos = UIManager.directionUIObject.getYPos();
+        minecraft.fontRendererObj.drawStringWithShadow(dirString, uiXPos, uiYPos, 0xFFFFFF);
     }
 
     // Update the world time on the UI
@@ -59,20 +109,38 @@ public class RenderEvent extends Gui {
         int hours = (int) Math.floor(ticks / 1000);
         int minutes = (int) ((ticks % 1000) / 1000.0 * 60);
 
-        // AM/PM
-        String amPM = "AM";
-        if(hours > 11){
-            amPM = "PM";
-        }
 
-        // To 12 hour time
-        if(hours > 12){
-            hours -= 12;
+        String amPM = "";
+        if(!ConfigReference.isClock24Hour){
+            // Determine AM/PM
+            if(hours > 11){
+                amPM = "PM";
+            }else{
+                amPM = "AM";
+            }
+
+            // Convert to 12 hours
+            if(hours > 12){
+                hours -= 12;
+            }
         }
 
         // Display
         String timeString = String.format("%2s:%2s", Integer.toString(hours), Integer.toString(minutes)).replace(' ', '0');
         timeString += " " + amPM;
-        minecraft.fontRendererObj.drawStringWithShadow(timeString, UIEnum.CLOCK.getX(), UIEnum.CLOCK.getY(), 0xFFFFFF);
+
+        int uiXPos = UIManager.clockUIObject.getXPos();
+        int uiYPos = UIManager.clockUIObject.getYPos();
+        minecraft.fontRendererObj.drawStringWithShadow(timeString, uiXPos, uiYPos, 0xFFFFFF);
     }
+
+    // Update the biome on the UI
+    private void updatePlayerBiome(){
+        World world = player.world;
+        Biome biome = world.getBiomeForCoordsBody(player.getPosition());
+        int uiXPos = UIManager.biomeUIObject.getXPos();
+        int uiYPos = UIManager.biomeUIObject.getYPos();
+        minecraft.fontRendererObj.drawStringWithShadow(biome.getBiomeName(), uiXPos, uiYPos, 0xFFFFFF);
+    }
+
 }

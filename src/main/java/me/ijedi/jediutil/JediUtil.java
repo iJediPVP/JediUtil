@@ -2,15 +2,19 @@ package me.ijedi.jediutil;
 
 import me.ijedi.jediutil.event.*;
 import me.ijedi.jediutil.ref.ModReference;
+import me.ijedi.jediutil.ui.UIManager;
+import me.ijedi.jediutil.ui.UIObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 @Mod(modid = ModReference.MOD_ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, canBeDeactivated = true)
 public class JediUtil {
 
     public static EntityPlayer player;
+
     /*@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
 
@@ -21,14 +25,14 @@ public class JediUtil {
     public void init(FMLInitializationEvent event) {
         Print(">>>>> JediUtil starting up. <<<<<");
 
-        MinecraftForge.EVENT_BUS.register(new RenderEvent());
         MinecraftForge.EVENT_BUS.register(new EntityJoinEvent());
+        MinecraftForge.EVENT_BUS.register(new RenderEvent());
     }
 
-    /*@Mod.EventHandler
+    @Mod.EventHandler
     public void post(FMLPostInitializationEvent event) {
-
-    }*/
+        UIManager.resetUIObjects();
+    }
 
     public static void Print(String message){
         System.out.println(message);
