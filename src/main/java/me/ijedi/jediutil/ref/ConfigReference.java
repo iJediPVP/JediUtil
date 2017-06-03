@@ -1,33 +1,38 @@
 package me.ijedi.jediutil.ref;
 
-import net.minecraftforge.common.config.Config;
+import me.ijedi.jediutil.client.overlays.OverlayManager;
+import me.ijedi.jediutil.enums.OverlayEnum;
+import net.minecraftforge.common.config.Configuration;
 
-@Config(modid = ModReference.MOD_ID)
+import java.io.File;
+
 public class ConfigReference {
 
-    // Config properties
-    @Config.Comment("Turn on/off all GUI overlay.")
-    @Config.Name("Enable GUI")
-    public static boolean isGuiOn = true;
+    public static Configuration configuration;
 
-    @Config.Comment("Turn on/off the coordinates.")
-    @Config.Name("Enable Coordinates")
-    public static boolean isShowCoordinates = true;
+    // Properties here
+    public static boolean allOverlaysEnabled = true;
+    private static final String ALL_OVERLAYS_ENABLED = "overlaysEnabled";
 
-    @Config.Comment("Turn on/off the direction indicator.")
-    @Config.Name("Enable Direction")
-    public static boolean isShowDirection = true;
+    public static void init(File configFile){
+        if(configuration == null){
+            configuration = new Configuration(configFile);
+        }
+        loadConfiguration();
+    }
 
-    @Config.Comment("Turn on/off the biome indicator.")
-    @Config.Name("Enable Biome")
-    public static boolean isShowBiome = true;
+    public static void loadConfiguration(){
 
-    @Config.Comment("Turn on/off the clock.")
-    @Config.Name("Enable Clock")
-    public static boolean isShowClock = true;
+        allOverlaysEnabled = configuration.getBoolean(ALL_OVERLAYS_ENABLED, OverlayManager.OVERLAY_CATEGORY, true, "Enable all overlays");
 
-    @Config.Comment("Turn on/off 24 hour clock time.")
-    @Config.Name("Enable 24 Hour Clock")
-    public static boolean isClock24Hour = true;
+        // Load overlay config settings
+        for(OverlayEnum overlayEnum : OverlayEnum.values()){
+            overlayEnum.loadConfiguration(configuration, false);
+        }
+
+        if(configuration.hasChanged()){
+            configuration.save();
+        }
+    }
 
 }
