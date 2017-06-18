@@ -6,9 +6,15 @@ import me.ijedi.jediutil.client.overlays.AbstractOverlay;
 import net.minecraft.client.gui.GuiButton;
 import java.util.List;
 
-public class MainOverlayGUI extends AbstractOverlayGUI{
+public class MainGUI extends AbstractGUI {
+    @Override
+    protected void initGuiItems() {
 
-    public MainOverlayGUI(){
+    }
+
+    private GuiButton overlayOrderButton;
+
+    public MainGUI(){
         this.menuText = "JediUtil Menu";
     }
 
@@ -49,14 +55,25 @@ public class MainOverlayGUI extends AbstractOverlayGUI{
         exitButton.xPosition = currentX;
         exitButton.yPosition = currentY;
         buttonList.add(exitButton);
+
+        /*// Overlay order button
+        overlayOrderButton = new GuiButton(exitButtonId + 1, 0,0,100,20, "Overlay Order");
+        currentX = centerX - (overlayOrderButton.width / 2);
+        currentY += (overlayOrderButton.height + 20);
+        overlayOrderButton.xPosition = currentX;
+        overlayOrderButton.yPosition = currentY;
+        buttonList.add(overlayOrderButton);*/
     }
 
     @Override
     protected void buttonAction(GuiButton button){
         int buttonId = button.id;
-        if(buttonId == exitButton.id)
-        {
+        if(buttonId == exitButton.id) {
             minecraft.displayGuiScreen(null);
+
+        }else if(buttonId == overlayOrderButton.id){
+            minecraft.displayGuiScreen(new OverlayOrderGUI());
+
         }else{
             // Try overlays options
             try{

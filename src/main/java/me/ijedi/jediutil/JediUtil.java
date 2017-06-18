@@ -26,10 +26,12 @@ public class JediUtil {
     public void init(FMLInitializationEvent event) {
         Print(">>>>> JediUtil starting up. <<<<<");
 
-        MinecraftForge.EVENT_BUS.register(new EntityJoinEvent());
         MinecraftForge.EVENT_BUS.register(new RenderEvent());
 
         MinecraftForge.EVENT_BUS.register(new UtilKeyInputEvent());
+
+        //this.player = Minecraft.getMinecraft().player;
+        overlayManager = new OverlayManager();
     }
 
     /*@Mod.EventHandler

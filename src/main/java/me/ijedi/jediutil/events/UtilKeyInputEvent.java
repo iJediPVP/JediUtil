@@ -1,6 +1,6 @@
 package me.ijedi.jediutil.events;
 
-import me.ijedi.jediutil.client.gui.MainOverlayGUI;
+import me.ijedi.jediutil.client.gui.MainGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -20,7 +20,7 @@ public class UtilKeyInputEvent extends KeyInputEvent {
     public void onKeyInputEvent(KeyInputEvent event){
 
         if(openGUIKeyBind.isPressed()){
-            Minecraft.getMinecraft().displayGuiScreen(new MainOverlayGUI());
+            Minecraft.getMinecraft().displayGuiScreen(new MainGUI());
         }
 
     }

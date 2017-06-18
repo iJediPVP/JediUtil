@@ -12,7 +12,7 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.io.IOException;
 
-public abstract class AbstractOverlayGUI extends GuiScreen {
+public abstract class AbstractGUI extends GuiScreen {
 
     protected OverlayEnum overlayEnum;
     protected Minecraft minecraft;
@@ -27,6 +27,7 @@ public abstract class AbstractOverlayGUI extends GuiScreen {
     protected int menuTextColor = 0xFFFFFF;
 
     protected abstract void initButtons();
+    protected abstract void initGuiItems();
     protected abstract void buttonAction(GuiButton guiButton);
     protected abstract void exitButtonAction(GuiButton guiButton);
 
@@ -43,6 +44,7 @@ public abstract class AbstractOverlayGUI extends GuiScreen {
 
         initButtons();
         super.initGui();
+        initGuiItems();
     }
 
     @Override

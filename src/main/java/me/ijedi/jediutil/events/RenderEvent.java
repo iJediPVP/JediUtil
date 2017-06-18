@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.swing.*;
+
 public class RenderEvent extends Gui {
 
     private Minecraft minecraft;
@@ -27,18 +29,22 @@ public class RenderEvent extends Gui {
         }
 
         // Render some things!
-        if(!JediUtil.player.equals(null))
-        {
-            player = JediUtil.player;
-            minecraft = Minecraft.getMinecraft();
-            if(!minecraft.gameSettings.showDebugInfo){
+        try{
+            if(!JediUtil.player.equals(null))
+            {
+                player = JediUtil.player;
+                minecraft = Minecraft.getMinecraft();
+                if(!minecraft.gameSettings.showDebugInfo){
 
-                // getOverlayList should only contain enabled overlays
-                JediUtil.overlayManager.setOverlayPositions();
-                for(AbstractOverlay overlay : JediUtil.overlayManager.getEnabledOverlayList(false)){
-                    renderOverlay(overlay);
+                    // getOverlayList should only contain enabled overlays
+                    JediUtil.overlayManager.setOverlayPositions();
+                    for(AbstractOverlay overlay : JediUtil.overlayManager.getEnabledOverlayList(false)){
+                        renderOverlay(overlay);
+                    }
                 }
             }
+        }catch(NullPointerException e){
+            JediUtil.player = Minecraft.getMinecraft().player;
         }
     }
 

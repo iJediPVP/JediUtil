@@ -8,7 +8,7 @@ import me.ijedi.jediutil.ref.ConfigReference;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextFormatting;
 
-public class OverlayConfigGUI extends AbstractOverlayGUI{
+public class OverlayConfigGUI extends AbstractGUI {
 
     private GuiButton enableButton;
     private GuiButton colorButton;
@@ -67,6 +67,11 @@ public class OverlayConfigGUI extends AbstractOverlayGUI{
     }
 
     @Override
+    protected void initGuiItems() {
+
+    }
+
+    @Override
     public void buttonAction(GuiButton guiButton) {
         int buttonId = guiButton.id;
         if(buttonId == enableButton.id){
@@ -93,7 +98,7 @@ public class OverlayConfigGUI extends AbstractOverlayGUI{
 
     @Override
     protected void exitButtonAction(GuiButton guiButton) {
-        minecraft.displayGuiScreen(new MainOverlayGUI());
+        minecraft.displayGuiScreen(new MainGUI());
     }
 
     private GuiButton initButton(String buttonText, int x, int y){

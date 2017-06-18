@@ -15,6 +15,7 @@ public class OverlayManager {
     private static CoordinateOverlay coordinateOverlay;
     private static DirectionOverlay directionOverlay;
     private static FrameRateOverlay frameRateOverlay;
+    private static BlockLightOverlay blockLightOverlay;
 
     private static List<AbstractOverlay> overlayList;
 
@@ -31,22 +32,24 @@ public class OverlayManager {
         coordinateOverlay = new CoordinateOverlay();
         directionOverlay = new DirectionOverlay();
         frameRateOverlay = new FrameRateOverlay();
+        blockLightOverlay = new BlockLightOverlay();
 
         // Temporary
         coordinateOverlay.setOverlayRank(0);
         directionOverlay.setOverlayRank(1);
         clockOverlay.setOverlayRank(2);
-        frameRateOverlay.setOverlayRank(3);
+        frameRateOverlay.setOverlayRank(3); // broken outside of testing
         biomeOverlay.setOverlayRank(4);
+        blockLightOverlay.setOverlayRank(5); // broken
 
         // Index determines button id and button order
-        overlayList = new ArrayList<AbstractOverlay>(){{
-            add(0,biomeOverlay);
-            add(1,clockOverlay);
-            add(2,coordinateOverlay);
-            add(3,directionOverlay);
-            add(4,frameRateOverlay);
-        }};
+        overlayList = new ArrayList<>();
+        overlayList.add(overlayList.size(),biomeOverlay);
+        //overlayList.add(overlayList.size(),blockLightOverlay);
+        overlayList.add(overlayList.size(),clockOverlay);
+        overlayList.add(overlayList.size(),coordinateOverlay);
+        overlayList.add(overlayList.size(),directionOverlay);
+        //overlayList.add(overlayList.size(),frameRateOverlay);
     }
 
 

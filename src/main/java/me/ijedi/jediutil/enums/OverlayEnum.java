@@ -7,11 +7,12 @@ import net.minecraftforge.common.config.Configuration;
 
 public enum OverlayEnum {
 
-    BIOME("Biome", OverlayManager.OVERLAY_CATEGORY + "." + "biome", true, ColorEnum.WHITE.toString(), false),
-    CLOCK("Clock", OverlayManager.OVERLAY_CATEGORY + "." + "clock", true, ColorEnum.WHITE.toString(), true),
-    COORDINATES("Coordinates", OverlayManager.OVERLAY_CATEGORY + "." + "coordinates", true, ColorEnum.WHITE.toString(), false),
-    DIRECTION("Direction", OverlayManager.OVERLAY_CATEGORY + "." + "direction", true, ColorEnum.WHITE.toString(), false),
-    FRAME_RATE("Frame Rate", OverlayManager.OVERLAY_CATEGORY + "." + "framerate", true, ColorEnum.WHITE.toString(), false);
+    BIOME("Biome", "biome", true, ColorEnum.WHITE.toString(), false),
+    CLOCK("Clock", "clock", true, ColorEnum.WHITE.toString(), true),
+    COORDINATES("Coordinates", "coordinates", true, ColorEnum.WHITE.toString(), false),
+    DIRECTION("Direction", "direction", true, ColorEnum.WHITE.toString(), false),
+    FRAME_RATE("Frame Rate", "framerate", true, ColorEnum.WHITE.toString(), false),
+    BLOCK_LIGHT("Block Light", "blocklight", true, ColorEnum.WHITE.toString(), false);
 
     private String name;
     private String configCategory;
@@ -36,7 +37,7 @@ public enum OverlayEnum {
     }
 
     public String getConfigCategory() {
-        return configCategory;
+        return OverlayManager.OVERLAY_CATEGORY + "." + configCategory;
     }
 
     public boolean isEnabled() {
@@ -72,11 +73,11 @@ public enum OverlayEnum {
     }
 
     public void loadConfiguration(Configuration configuration, boolean save){
-        isEnabled = configuration.getBoolean(ENABLED, configCategory, true, String.format("Enable %s overlay", name));
-        color = configuration.getString(COLOR, configCategory, ColorEnum.WHITE.toString(), String.format("Overlay color", name));
+        isEnabled = configuration.getBoolean(ENABLED, getConfigCategory(), true, String.format("Enable %s overlay", name));
+        color = configuration.getString(COLOR, getConfigCategory(), ColorEnum.WHITE.toString(), String.format("Overlay color", name));
 
         if(isClockEnum()){
-            is24HourClock = configuration.getBoolean(CLOCK_24HOUR, configCategory, true, String.format("24 Hour Clock", name));
+            is24HourClock = configuration.getBoolean(CLOCK_24HOUR, getConfigCategory(), true, String.format("24 Hour Clock", name));
 
         }
 
@@ -86,7 +87,7 @@ public enum OverlayEnum {
     }
 
     public void saveConfiguration(Configuration configuration, boolean save){
-        ConfigCategory category = configuration.getCategory(configCategory);
+        ConfigCategory category = configuration.getCategory(getConfigCategory());
         category.get(ENABLED).set(isEnabled);
         category.get(COLOR).set(color);
 
