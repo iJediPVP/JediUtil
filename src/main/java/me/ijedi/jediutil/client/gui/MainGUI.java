@@ -71,8 +71,8 @@ public class MainGUI extends AbstractGUI {
         if(buttonId == exitButton.id) {
             minecraft.displayGuiScreen(null);
 
-        }else if(buttonId == overlayOrderButton.id){
-            minecraft.displayGuiScreen(new OverlayOrderGUI());
+        //}else if(buttonId == overlayOrderButton.id){
+        //    minecraft.displayGuiScreen(new OverlayOrderGUI());
 
         }else{
             // Try overlays options
