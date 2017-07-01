@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = ModReference.MOD_ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, canBeDeactivated = true)
 public class JediUtil {
 
-    public static EntityPlayer player;
     public static OverlayManager overlayManager;
 
     @Mod.EventHandler
@@ -30,7 +29,6 @@ public class JediUtil {
 
         MinecraftForge.EVENT_BUS.register(new UtilKeyInputEvent());
 
-        //this.player = Minecraft.getMinecraft().player;
         overlayManager = new OverlayManager();
     }
 

@@ -30,21 +30,18 @@ public class RenderEvent extends Gui {
 
         // Render some things!
         try{
-            if(!JediUtil.player.equals(null))
-            {
-                player = JediUtil.player;
-                minecraft = Minecraft.getMinecraft();
-                if(!minecraft.gameSettings.showDebugInfo){
+            minecraft = Minecraft.getMinecraft();
+            player = minecraft.player;
+            if(!minecraft.gameSettings.showDebugInfo){
 
-                    // getOverlayList should only contain enabled overlays
-                    JediUtil.overlayManager.setOverlayPositions();
-                    for(AbstractOverlay overlay : JediUtil.overlayManager.getEnabledOverlayList(false)){
-                        renderOverlay(overlay);
-                    }
+                // getOverlayList should only contain enabled overlays
+                JediUtil.overlayManager.setOverlayPositions();
+                for(AbstractOverlay overlay : JediUtil.overlayManager.getEnabledOverlayList(false)){
+                    renderOverlay(overlay);
                 }
             }
         }catch(NullPointerException e){
-            JediUtil.player = Minecraft.getMinecraft().player;
+            // The player is probably null.. do nothing for now..
         }
     }
 
@@ -66,7 +63,5 @@ public class RenderEvent extends Gui {
             minecraft.fontRendererObj.drawString(message, xPosition, yPosition, overlay.getOverlayEnum().getColorEnum().getColorCode());
         }
         GlStateManager.popMatrix();
-
-
     }
 }
